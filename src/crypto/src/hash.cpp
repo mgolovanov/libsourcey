@@ -45,7 +45,7 @@ Hash::~Hash()
     crypto::uninitializeEngine();
 
 #if OPENSSL_VERSION_NUMBER < 0x10100000L
-    EVP_MD_CTX_cleanup(&_ctx);
+    EVP_MD_CTX_reset(&_ctx);
 #else
     EVP_MD_CTX_free(_ctxPtr);
 #endif
@@ -58,10 +58,10 @@ void Hash::reset()
     //EVP_MD_CTX_free(_ctx);
     //_ctx = EVP_MD_CTX_new();
 #if OPENSSL_VERSION_NUMBER < 0x10100000L
-    internal::api(EVP_MD_CTX_cleanup(&_ctx));
+    internal::api(EVP_MD_CTX_reset(&_ctx));
     internal::api(EVP_DigestInit(&_ctx, _md));
 #else
-    internal::api(EVP_MD_CTX_cleanup(_ctxPtr));
+    internal::api(EVP_MD_CTX_reset(_ctxPtr));
     internal::api(EVP_DigestInit(_ctxPtr, _md));
 #endif
 
